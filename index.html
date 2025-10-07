@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Penyemak Gred Sekolah Rendah / Primary School Grade Checker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Reem+Kufi&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Scheherazade+New&display=swap" rel="stylesheet">
+
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #1e90ff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 180px;
+        background: #320A6B;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 30px;
+    }
+
+    .sidebar button {
+        margin: 10px 0;
+        padding: 10px;
+        width: 140px;
+        border: none;
+        border-radius: 8px;
+        background: #555;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .sidebar button:hover {
+        background: #777;
+    }
+
+    /* Kandungan utama */
+    .container {
+        flex: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-left: 200px;
+        margin-top: 15px;
+    }
+    
+    .card {
+        background: linear-gradient(135deg, #ffffff, #e6f0ff, #cce0ff);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 500px;
+        width: 400px;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .card h2 {
+        margin-bottom: 20px;
+    }
+
+    input, button {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    #calculateBtn {
+        background: #4CAF50;
+        color: white;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    #calculateBtn:hover {
+        background: #45a049;
+    }
+
+    /* Kotak keputusan */
+    #result {
+        margin-top: 5px;
+        padding: 18px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #e6f7ff, #ffffff);
+        font-weight: bold;
+        text-align: center;
+        color: #1a2a6c;
+        box-shadow: 
+            0 8px 20px rgba(0, 0, 0, 0.25),
+            0 16px 40px rgba(0, 0, 0, 0.2),
+            inset 0 0 20px rgba(0, 123, 255, 0.4);
+  
+    }
+
+    @keyframes glowPulse {
+        from { transform: scale(1); }
+        to { transform: scale(1.05); }
+    }
+
+    /* Footer */
+    footer {
+        background: #222;
+        color: gray;
+        text-align: center;
+        padding: 12px;
+        margin-top: auto;
+        position: relative;
+        z-index: 2;
+        font-size: 14px;
+    }
+
+    /* Animasi */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Imej */
+    .title-image {
+        width: 100px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .sekolah-image {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        position: absolute;
+        bottom: 160px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Tajuk */
+    .main-title {
+        margin-top: 5px 0;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+        color: #2c3e50;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        animation: fadeInDown 1s ease;
+    }
+
+    label {
+        display: block;
+        margin-top: 12px;
+        font-weight: bold;
+        color: #2c3e50;
+        text-align: left;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+   .arabic, .jawi {
+    font-family: 'Amiri', 'Scheherazade New', serif; /* font professional */
+    direction: rtl;            /* tulis kanan → kiri */
+    text-align: right;         /* rata kanan */
+    font-size: 22px;           /* sedikit lebih besar */
+    line-height: 1.9;          /* lebih ruang, senang baca */
+    font-weight: 500;          /* sederhana tebal, tidak terlalu berat */
+    letter-spacing: 0.5px;     /* jarak huruf sedikit */
+    }
+    body {
+    background: url("murid.gif") no-repeat center center fixed;
+    background-size: cover;
+    }
+  
+</style>
+
+</head>
+<body>
+
+ <!-- Kandungan Utama -->
+<div class="container">
+  <div class="card">
+    <!-- Tajuk -->
+    <h2 class="main-title" id="titleMain">🎓 Sekolah Rendah 📘</h2>
+    <h2 id="titleSub">📝 Penyemak Gred</h2>
+
+    <label for="studentName" id="labelName">Nama Murid:</label>
+    <input type="text" id="studentName" placeholder="Masukkan nama murid">
+
+    <label for="subject" id="labelSubject">Mata Pelajaran:</label>
+    <input type="text" id="subject" placeholder="Masukkan mata pelajaran">
+
+    <label for="score" id="labelScore">Markah:</label>
+    <input type="number" id="score" placeholder="Masukkan markah (0-100)">
+
+    <button id="calculateBtn">Kira Gred</button>
+    <div id="result">Keputusan akan dipaparkan di sini</div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <img src="bendera.png" alt="bendera" class="title-image">
+  <button id="btnMalay">Melayu</button>
+  <button id="btnJawi">ملايو</button>
+  <button id="btnArabic">عربي</button>
+  <button id="btnEnglish">English</button>
+  <br>
+  <img src="sekolah.png" alt="sekolah" class="sekolah-image">
+</div>
+
+<!-- Footer -->
+<footer id="footer-text">
+  Direka khas dengan ❤️ oleh Koleksi 77
+</footer>
+
+<script>
+  let currentLang = "ms"; // default Melayu
+
+  // Fungsi untuk suara
+  function speakUtter(text, langCode) {
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = langCode;
+    window.speechSynthesis.speak(utter);
+  }
+
+  // Fungsi pengiraan gred
+  document.getElementById("calculateBtn").addEventListener("click", function () {
+    let name = document.getElementById("studentName").value;
+    let subject = document.getElementById("subject").value;
+    let score = parseInt(document.getElementById("score").value);
+    let grade = "";
+    let output = "";
+    let voiceText = "";
+
+    if (isNaN(score)) {
+      if (currentLang === "ms") {
+        output = "⚠️ Sila masukkan markah yang sah.";
+        speakUtter("Sila masukkan markah yang sah", "ms-MY");
+      } else if (currentLang === "en") {
+        output = "⚠️ Please enter a valid score.";
+        speakUtter("Please enter a valid score", "en-US");
+      } else if (currentLang === "jawi") {
+        output = "⚠️ سيلا ماسوقكن مرکه يڠ صح.";
+        speakUtter("Sila masukkan markah yang sah", "ms-MY");
+      } else if (currentLang === "ar") {
+        output = "⚠️ الرجاء إدخال درجة صحيحة.";
+        speakUtter("الرجاء إدخال درجة صحيحة", "ar-SA");
+      }
+      document.getElementById("result").textContent = output;
+      return;
+    }
+
+    // Melayu
+    if (currentLang === "ms") {
+      if (score >= 80) grade = "Cemerlang (A)";
+      else if (score >= 65) grade = "Baik (B)";
+      else if (score >= 50) grade = "Memuaskan (C)";
+      else if (score >= 40) grade = "Lulus Minimum (D)";
+      else grade = "Gagal (E)";
+      output = `${name} (${subject}): ${grade}`;
+      voiceText = `${name} untuk subjek ${subject}, gred anda ialah ${grade}`;
+      speakUtter(voiceText, "ms-MY");
+    }
+
+    else if (currentLang === "en") {
+  if (score >= 80) grade = "Excellent (A)";
+  else if (score >= 65) grade = "Good (B)";
+  else if (score >= 50) grade = "Fair (C)";
+  else if (score >= 40) grade = "Pass (D)";
+  else grade = "Fail (E)";
+  output = `${name} (${subject}): ${grade}`;
+  voiceText = `${name}, for the subject ${subject}, your grade is ${grade}`;
+  speakUtter(voiceText, "en-GB");
+}
+
+
+    // Jawi
+    else if (currentLang === "jawi") {
+      if (score >= 80) grade = "چمرلڠ (A)";
+      else if (score >= 65) grade = "بايق (B)";
+      else if (score >= 50) grade = "ممواسكن (C)";
+      else if (score >= 40) grade = "لولوس مينيموم (D)";
+      else grade = "ݢاڬل (E)";
+      output = `${name} (${subject}): ${grade}`;
+      voiceText = `${name} untuk subjek ${subject}, gred anda ialah ${grade}`;
+      speakUtter(voiceText, "ms-MY"); // Jawi tetap sebut ikut suara Melayu
+    }
+
+    // Arabic
+    else if (currentLang === "ar") {
+      if (score >= 80) grade = "ممتاز (A)";
+      else if (score >= 65) grade = "جيد (B)";
+      else if (score >= 50) grade = "مقبول (C)";
+      else if (score >= 40) grade = "ناجح بالحد الأدنى (D)";
+      else grade = "راسب (E)";
+      output = `${name} (${subject}): ${grade}`;
+      voiceText = `${name} في مادة ${subject} درجتك هي ${grade}`;
+      speakUtter(voiceText, "ar-SA");
+    }
+
+    document.getElementById("result").textContent = output;
+  });
+
+  // Tukar Bahasa Melayu
+  document.getElementById("btnMalay").addEventListener("click", function () {
+    currentLang = "ms";
+    document.getElementById("titleMain").textContent = "🎓 Sekolah Rendah 📘";
+    document.getElementById("titleSub").textContent = "📝 Penyemak Gred";
+    document.getElementById("labelName").textContent = "Nama Murid:";
+    document.getElementById("studentName").placeholder = "Masukkan nama murid";
+    document.getElementById("labelSubject").textContent = "Mata Pelajaran:";
+    document.getElementById("subject").placeholder = "Masukkan mata pelajaran";
+    document.getElementById("labelScore").textContent = "Markah:";
+    document.getElementById("score").placeholder = "Masukkan markah (0-100)";
+    document.getElementById("calculateBtn").textContent = "Kira Gred";
+    document.getElementById("result").textContent = "Keputusan akan dipaparkan di sini";
+    document.getElementById("footer-text").textContent = "Direka khas dengan ❤️ oleh Koleksi 77";
+  });
+
+ // Switch to British English
+document.getElementById("btnEnglish").addEventListener("click", function () {
+  currentLang = "en";
+  document.getElementById("titleMain").textContent = "🎓 Primary School 📘";
+  document.getElementById("titleSub").textContent = "📝 Grade Calculator";
+  document.getElementById("labelName").textContent = "Pupil's Name:";
+  document.getElementById("studentName").placeholder = "Enter pupil's name";
+  document.getElementById("labelSubject").textContent = "Subject:";
+  document.getElementById("subject").placeholder = "Enter subject name";
+  document.getElementById("labelScore").textContent = "Mark:";
+  document.getElementById("score").placeholder = "Enter mark (0–100)";
+  document.getElementById("calculateBtn").textContent = "Calculate Grade";
+  document.getElementById("result").textContent = "The result will appear here";
+  document.getElementById("footer-text").textContent = "Created with ❤️ by Koleksi 77";
+});
+
+
+  // Tukar Jawi
+  document.getElementById("btnJawi").addEventListener("click", function () {
+    currentLang = "jawi";
+    document.getElementById("titleMain").textContent = "🎓 سكوله رنده 📘";
+    document.getElementById("titleSub").textContent = " ڤڽمق ݢريد 📝";
+    document.getElementById("labelName").textContent = "نام موريد:";
+    document.getElementById("studentName").placeholder = "ماسوقكن نام موريد";
+    document.getElementById("labelSubject").textContent = "مات ڤلاجرن:";
+    document.getElementById("subject").placeholder = "ماسوقكن مات ڤلاجرن";
+    document.getElementById("labelScore").textContent = "مرکه:";
+    document.getElementById("score").placeholder = "ماسوقكن مرکه (0-100)";
+    document.getElementById("calculateBtn").textContent = "کيـرا ݢريد";
+    document.getElementById("result").textContent = "کڤوتوسن اكن دڤاڤرکن د سيني";
+    document.getElementById("footer-text").textContent = "Koleksi 77 ديريك خاص دڠن ❤️ اوليه ";
+  });
+
+  // Tukar Arab
+  document.getElementById("btnArabic").addEventListener("click", function () {
+    currentLang = "ar";
+    document.getElementById("titleMain").textContent = "🎓 المدرسة الابتدائية 📘";
+    document.getElementById("titleSub").textContent = " فاحص الدرجات 📝";
+    document.getElementById("labelName").textContent = "اسم الطالب:";
+    document.getElementById("studentName").placeholder = "أدخل اسم الطالب";
+    document.getElementById("labelSubject").textContent = "المادة:";
+    document.getElementById("subject").placeholder = "أدخل المادة";
+    document.getElementById("labelScore").textContent = "الدرجة:";
+    document.getElementById("score").placeholder = "أدخل الدرجة (0-100)";
+    document.getElementById("calculateBtn").textContent = "احسب الدرجة";
+    document.getElementById("result").textContent = "ستظهر النتيجة هنا";
+    document.getElementById("footer-text").textContent = "Koleksi 77 صُمِّمَ خصيصًا بـ ❤️ من قِبَل ";
+  });
+</script>
+
+</body>
+</html>
+  
+
+
+
+
+
+
+
+
+
